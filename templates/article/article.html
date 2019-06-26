@@ -1,0 +1,123 @@
+{% extends "shared/navbar.html" %}
+
+{% block title %}
+    <title>ES-Blog | {{article.title}}</title>
+{% endblock title %}
+{% load crispy_forms_tags %}
+{% block body %}
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Post Content Column -->
+      
+      <div class="col-lg-10 bg-white mt-5">
+        <!-- Title -->
+        <h2 class="mt-3 text-center text-custom-warning">{{ article.title }}</h2>
+        <hr>
+        <!-- Preview Image -->
+        {% if article.image %}
+          <img class="card-img-top" height="300px" src="/media/{{ article.image }}" alt="Makaleyi Okuyunuz.">
+        {% else %}
+          <img class="card-img-top" src="http://placehold.it/750x300" alt="Makaleyi Okuyunuz.">
+        {% endif %}
+        <hr>
+        <!-- Post Content -->
+        <div class="article-content">
+          {{ article.content| safe }}
+        </div>
+        
+      </div>
+
+      <!-- Author And Datetime -->
+      <div class="col-lg-10 py-2 article-content-footer">
+          <p class="lead text-center">  
+              <i class="fa fa-calendar" aria-hidden="true" title="Gönderi Tarihi"></i> 
+              <small title="Gönderi Tarihi">{{ article.created_date }}</small>
+              <i class="fa fa-user" aria-hidden="true" title="Yazar"></i> 
+              <small title="Yazar"><a href="/author/{{article.author}}">{{ article.author }}</a></small>
+          </p>
+      </div>
+      
+        <!-- Post Comment Column -->
+        {% if comments %}
+        <div class="col-lg-10 mt-4 bg-white">
+        <ul class="list-unstyled" id="listComments">
+          {% for comment in comments %}
+          <li class="media">
+              {% if comment.author.userprofile.image %}
+                <img class="mr-3 mt-2 align-self-center rounded-circle" width="40px" height="40px" src="/media/{{comment.author.userprofile.image}}" alt="">
+              {% else %}
+                <img class="mr-3 mt-2 align-self-center rounded-circle" width="40px" height="40px" src="http://placehold.it/50x50" alt="">
+              {% endif %}
+              <div class="media-body">
+                <h5 class="mt-0 mb-0">{{comment.author}}</h5>
+                {{comment.content}}
+              </div>
+            </li>
+            <hr>
+          </ul>
+          {% endfor %}
+                    
+      </div>
+        {% else %}
+
+          <div class="alert alert-danger col-lg-10">Henüz Bu Makalede Yorum Bulunmuyor</div>
+
+        {% endif %}
+        <!-- /.Post Comment Column -->
+        
+        <div class="col-lg-10">
+          {% if request.user.is_authenticated %}
+          <form method="POST">
+              {% csrf_token %}
+              {{ comment_form.content|as_crispy_field }}
+              <button type="button" id="sendComment" class="btn btn-primary float-right w-25 mb-5">Yorumu Gönder</button>
+          </form>
+        {% else %}
+
+          <div class="alert alert-danger">Yorum Atmak İçin Giriş Yapmalısınız!</div>
+
+        {% endif %}
+        </div>
+        <!-- Yorum Form'u -->
+        
+
+        <!-- /. Yorum Formu -->
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container -->
+  <!-- Bootstrap core JavaScript -->
+  <script>
+      $("#sendComment").click(() => {
+        console.log("hello")
+        let csrf_token = "{{csrf_token}}";
+        let content    = $("#id_content").val()
+        $.ajax({
+          url:"",
+          type:"POST",
+          data:{csrfmiddlewaretoken:csrf_token, content:content}
+        })
+        .done(() => {
+          $("#listComments").append(
+            `
+            <li class="media">
+                {% if request.user.userprofile.image %}
+                  <img class="mr-3 mt-2 align-self-center rounded-circle" width="40px" height="40px" src="/media/{{request.user.userprofile.image}}" alt="">
+                {% else %}
+                  <img class="mr-3 mt-2 align-self-center rounded-circle" width="40px" height="40px" src="http://placehold.it/50x50" alt="">
+                {% endif %}
+              <div class="media-body">
+                <h5 class="mt-0 mb-0">{{ request.user }}</h5>
+                ${content}
+              </div>
+            </li>
+            <hr>
+            `
+          )
+        })
+    })
+  </script>
+{% endblock body %}
+

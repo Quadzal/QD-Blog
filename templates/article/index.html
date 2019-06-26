@@ -1,0 +1,63 @@
+{% extends "shared/navbar.html" %}
+{% block title %}
+ <title>ES-Blog | Anasayfa</title>
+{% endblock title %}
+
+{% block body %}
+    <!-- Page Content -->
+  <div class="container">
+
+        <div class="row">
+
+          <!-- Blog Entries Column -->
+          <div class="col-md-8">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if message.tags %}
+                            {% if message.tags == "error" %}
+                                <div class="alert alert-danger">{{ message }}</div>
+                            {% else %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+            <div class="my-4"></div>
+            <!-- Blog Post -->
+            {% if articles %}
+                {% for article in articles %}
+                    <div class="card mb-4">
+                        {% if article.image %}
+                            <img class="card-img-top" height="300px" src="/media/{{ article.image }}" alt="Card image cap">
+                        {% else %}
+                            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h2 class="card-title">{{ article.title }}</h2>
+                            <p class="card-text">{{ article.content| safe| truncatechars:50 }}</p>
+                            <a href="/article/{{ article.slug }}" class="btn btn-primary">Okumaya Devam Edin &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <i>Gönderi Tarihi: {{ article.created_date }}
+                            Yazar: <a href="/author/{{article.author}}">{{ article.author }}</a></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Pagination -->
+                    {% include "shared/pagination.html" %}
+        
+            {% else %}
+                <div class="alert alert-danger">Henüz Bu Blogta Makale Yok.</div>
+            {% endif %}
+          </div>
+        </div>
+        <!-- /.row -->
+    
+    </div>
+      <!-- /.container -->
+{% endblock body %}
+  
