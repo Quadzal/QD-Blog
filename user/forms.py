@@ -2,37 +2,35 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from article.models import UserProfile
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=20,widget=forms.TextInput, label="Kullanıcı Adı", min_length=8)
-    password = forms.CharField(max_length=32, min_length=8, label="Şifre", widget=forms.PasswordInput)
-
-    def clean(self):
-        username = self.cleaned_data["username"]
-        password = self.cleaned_data["password"]
-        if username and password:
-            user = authenticate(username=username,password=password)
-            if not user:
-                raise forms.ValidationError("Kullanıcı Adını Veya Parolayı Yanlış Girdiniz.")
-        return super(LoginForm, self).clean()
+from django.contrib.auth.forms import (
+    UserCreationForm, 
+    PasswordChangeForm,
+    AuthenticationForm)
 
 
-class RegisterForm(forms.ModelForm):
-    
-    username = forms.CharField(max_length=20, label="Kullanıcı Adı", min_length=8)
-    password1 = forms.CharField(max_length=32, min_length=8, label="Şifre", widget=forms.PasswordInput)
-    password2 = forms.CharField(max_length=32, min_length=8, label="Şifreyi Doğrulayınız", widget=forms.PasswordInput)
+class UserChangePasswordForm(forms.ModelForm):
+    old_password = forms.CharField(max_length=32, min_length=8, label="Eski Parola", widget=forms.PasswordInput())
+    new_password = forms.CharField(max_length=32, min_length=8, label="Yeni Parola", widget=forms.PasswordInput())
+    new_password2 = forms.CharField(max_length=32, min_length=8, label="Yeni Parolayı Doğrula", widget=forms.PasswordInput())
     class Meta:
         model = User
-        fields = [
-            "username",
-            "password1",
-            "password2"
-        ]
+        fields = []
 
-    def clean(self):
-        password1 = self.cleaned_data["password1"]
-        password2 = self.cleaned_data["password2"]
+    def save(self, commit=False):
+        instance = super().save(commit=False)
+        instance.set_password(self.cleaned_data["new_password"])
+        instance.save()
 
-        if (password1 and password2) and password1 != password2:
-            raise forms.ValidationError("Şifreler Eşleşmiyor!")
-        super(RegisterForm, self).clean() 
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        max_length=32, 
+        min_length=8, 
+        label="Kullanıcı Adı"
+    )
+    password = forms.CharField(max_length=32,
+        min_length=8,
+        label="Şifre",
+        widget=forms.PasswordInput
+    )
+    

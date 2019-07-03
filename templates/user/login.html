@@ -7,33 +7,31 @@
     <title>ES-Blog | Üye Girişi</title>
     {% load static %}
     {% load crispy_forms_tags %}
-    <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
-    <link href="{% static 'css/blog-home.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-xl-2">
-                
+            <div class="col-md-2">
             </div>
-            
-            <div class="col-md-8 col-xl-8">
-                <h3> Üye Girişi</h3>
-                <hr>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ login_form|crispy }}
-                    <button type="submit" class="btn btn-success">Giriş Yap</button>
-                </form>
-            </div>
-            <div class="col-md-4 col-xl-4"></div>
+            <div class="col-md-8 mt-5">
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                {% endif %}
+                    <form class="box justify-content-center" method="post">
+                        {% csrf_token %}
+                        <h1>Giriş Ekranı</h1>
+                        {{ form }}
+                        <input type="submit" class="mb-5" value="Giriş Yap">
+                    </form>
+            </div>  
         </div>
     </div>
-
+    
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>

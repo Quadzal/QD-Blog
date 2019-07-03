@@ -70,7 +70,7 @@
           {% if request.user.is_authenticated %}
           <form method="POST">
               {% csrf_token %}
-              {{ comment_form.content|as_crispy_field }}
+              {{ form.content|as_crispy_field }}
               <button type="button" id="sendComment" class="btn btn-primary float-right w-25 mb-5">Yorumu Gönder</button>
           </form>
         {% else %}
