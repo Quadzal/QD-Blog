@@ -1,20 +1,15 @@
 body{
     margin: 0;
     padding: 0;
-    background: #34495e;
+    background: #232426;
 }
-.box{
-    height: 400px;
-    background: #191919;
-    text-align: center;
-}
+
 label{
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
     color: #2ecc71;
 }
 ul.errorlist {display:none;}
-
 .box h1{
     color: #2ecc71;
     font-weight: 500;
@@ -22,28 +17,28 @@ ul.errorlist {display:none;}
 .box input[type = "text"],.box input[type = "password"]{
     background: none;
     display: block;
-    margin: 7px auto;
     text-align: center;
     border: 3px solid #3498db;
     padding: 10px 10px;
-    width: 200px;
+    width: 300px;
     outline: none;
     color: white;
-    border-radius: 24px;
+    border-radius: 20px;
     transition: 0.25s;
 }
 .box input[type = "text"]:focus,.box input[type = "password"]:focus{
-    width: 300px;
+    width: 400px;
     border-color: #2ecc71;
 }
 .box input[type = "submit"]{
     border:0;
     background: none;
     display: block;
-    margin: 20px auto;
     text-align: center;
     border: 2px solid #2ecc71;
     padding: 14px 40px;
+    margin-top: 15px;
+    width: 300px;
     outline: none;
     color: white;
     border-radius: 24px;

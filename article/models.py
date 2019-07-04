@@ -17,6 +17,7 @@ class Article(models.Model):
     created_date = models.DateTimeField(verbose_name= "Oluşturulma Tarihi", auto_now_add= True)
 
     class Meta:
+        ordering = ["-created_date"]
         verbose_name = "Makaleler"
 
     def save(self, *args, **kwargs):

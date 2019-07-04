@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.generic import UpdateView, ListView, CreateView, TemplateView
+from django.urls import reverse_lazy
 from .models import Article, Category, UserProfile
 from .forms import CommentForm, UserProfileForm, CustomUserChangeForm
 
@@ -58,10 +59,10 @@ class SearchView(CategoryObjectMixin, ListView):
         return Article.objects.filter(title__contains=self.request.GET["title"])
 
 
-class ArticleView(CreateView):
+class ArticleView(CategoryObjectMixin, CreateView):
     template_name = "article/article.html"
     form_class = CommentForm
-    success_url = "/"
+    success_url = reverse_lazy("article:home")
     
     def get_context_data(self, *args, **kwargs):
         article = Article.objects.get(slug=self.kwargs["slug"])
@@ -81,7 +82,7 @@ class ArticleView(CreateView):
 class ProfileChange(UpdateView):
     template_name = "article/profile.html"
     form_class = UserProfileForm
-    success_url = "/profile/"
+    success_url = reverse_lazy("article:profile")
     
     def form_valid(self, form):
         user_change = CustomUserChangeForm(self.request.POST, instance=self.request.user)

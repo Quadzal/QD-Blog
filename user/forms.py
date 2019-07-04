@@ -9,9 +9,22 @@ from django.contrib.auth.forms import (
 
 
 class UserChangePasswordForm(forms.ModelForm):
-    old_password = forms.CharField(max_length=32, min_length=8, label="Eski Parola", widget=forms.PasswordInput())
-    new_password = forms.CharField(max_length=32, min_length=8, label="Yeni Parola", widget=forms.PasswordInput())
-    new_password2 = forms.CharField(max_length=32, min_length=8, label="Yeni Parolayı Doğrula", widget=forms.PasswordInput())
+    old_password = forms.CharField(max_length=32,
+        min_length=8,
+        label="Eski Parola",
+        widget=forms.PasswordInput()
+    )
+    new_password = forms.CharField(
+        max_length=32, 
+        min_length=8, 
+        label="Yeni Parola", 
+        widget=forms.PasswordInput()
+    )
+    new_password2 = forms.CharField(max_length=32,
+        min_length=8, 
+        label="Yeni Parolayı Doğrula", 
+        widget=forms.PasswordInput()
+    )
     class Meta:
         model = User
         fields = []
@@ -20,17 +33,3 @@ class UserChangePasswordForm(forms.ModelForm):
         instance = super().save(commit=False)
         instance.set_password(self.cleaned_data["new_password"])
         instance.save()
-
-
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(
-        max_length=32, 
-        min_length=8, 
-        label="Kullanıcı Adı"
-    )
-    password = forms.CharField(max_length=32,
-        min_length=8,
-        label="Şifre",
-        widget=forms.PasswordInput
-    )
-    

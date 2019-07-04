@@ -39,11 +39,13 @@
                         <div class="card-body">
                             <h2 class="card-title">{{ article.title }}</h2>
                             <p class="card-text">{{ article.content| safe| truncatechars:50 }}</p>
-                            <a href="/article/{{ article.slug }}" class="btn btn-primary">Okumaya Devam Edin &rarr;</a>
+                            <a href="/article/{{ article.slug }}" class="btn btn-primary float-right">Okumaya Devam Edin &rarr;</a>
                         </div>
                         <div class="card-footer text-muted">
-                            <i>Gönderi Tarihi: {{ article.created_date }}
-                            Yazar: <a href="/author/{{article.author}}">{{ article.author }}</a></i>
+                            <i class="fa fa-calendar" aria-hidden="true" title="Gönderi Tarihi"></i> 
+                            <small title="Gönderi Tarihi">{{ article.created_date }}</small>
+                            <i class="fa fa-user" aria-hidden="true" title="Yazar"></i> 
+                            <small title="Yazar"><a href="/author/{{article.author}}">{{ article.author }}</a></small>
                         </div>
                     </div>
                     {% endfor %}

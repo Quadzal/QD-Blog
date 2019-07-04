@@ -13,9 +13,10 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
             </div>
-            <div class="col-md-8 mt-5">
+
+            <div class="col-md-4 mt-5">
                 {% if form.errors %}
                     {% for error in form.non_field_errors %}
                         <div class="alert alert-danger">{{ error }}</div>
@@ -24,7 +25,6 @@
                 {% endif %}
                     <form class="box justify-content-center" method="post">
                         {% csrf_token %}
-                        <h1>Giriş Ekranı</h1>
                         {{ form }}
                         <input type="submit" class="mb-5" value="Giriş Yap">
                     </form>
